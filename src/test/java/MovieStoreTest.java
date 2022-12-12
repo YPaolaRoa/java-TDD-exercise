@@ -1,52 +1,59 @@
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 import java.util.List;
 import model.Movie;
-import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
 public class MovieStoreTest {
-    public MovieStoreTest() {
-    }
 
+    public static final Movie STAR_WARS = new Movie("Star wars");
+    public static final Movie STAR_TREK = new Movie("STAR trek");
+    public static final Movie HARRY_POTTER = new Movie("Harry Potter");
+    private  MovieStore movieStore;
+
+    @Before
+    public void setUp() {
+       movieStore = new MovieStore();
+
+    }
     @Test
-    public void returnsNoResultWhenNoTitlesPartiallyMatch() throws Exception {
-        MovieStore movieStore = new MovieStore();
+    public void returnsNoResultWhenNoTitlesPartiallyMatch() {
+        final MovieStore movieStore = new MovieStore();
         List<Movie> results = movieStore.findByPartialTitle("abc");
-        Assert.assertEquals(results.size(), 0L);
+
+        assertEquals(results.size(), 0L);
     }
 
     @Test
     public void addsAMovieToMovieStore() {
-        MovieStore movieStore = new MovieStore();
-        Movie harryPotter = new Movie("Harry Potter");
+        Movie harryPotter = HARRY_POTTER;
         movieStore.add(harryPotter);
         List<Movie> allMovies = movieStore.getMovies();
-        Assert.assertTrue(allMovies.contains(harryPotter));
-        Assert.assertEquals((long)allMovies.size(), 1L);
+        assertTrue(allMovies.contains(harryPotter));
+        assertEquals(allMovies.size(), 1L);
     }
 
     @Test
-    public void findsAMovieWhenTitleIsPartiallyMatch() throws Exception {
-        MovieStore movieStore = new MovieStore();
-        Movie harryPotter = new Movie("Harry Potter");
-        movieStore.add(harryPotter);
-        movieStore.add(new Movie("Star wars"));
+    public void findsAMovieWhenTitleIsPartiallyMatch() {
+        movieStore.add(HARRY_POTTER);
+        movieStore.add(STAR_WARS);
         List<Movie> results = movieStore.findByPartialTitle("arry");
-        Assert.assertEquals(results.size(), 1L);
-        Assert.assertTrue(results.contains(harryPotter));
+        assertEquals(results.size(), 1L);
+        assertTrue(results.contains(HARRY_POTTER));
     }
 
+
     @Test
-    public void findsMoviesWhenTitleIsPartiallyMatch() throws Exception {
-        MovieStore movieStore = new MovieStore();
-        Movie harryPotter = new Movie("Harry Potter");
+    public void findsMoviesWhenTitleIsPartiallyMatch() {
+        Movie harryPotter = HARRY_POTTER;
         movieStore.add(harryPotter);
-        Movie star_wars = new Movie("Star wars");
-        movieStore.add(star_wars);
-        Movie star_trek = new Movie("STAR trek");
-        movieStore.add(star_trek);
+        movieStore.add(STAR_WARS);
+        movieStore.add(STAR_TREK);
         List<Movie> results = movieStore.findByPartialTitle("tar");
-        Assert.assertEquals(results.size(), 2L);
-        Assert.assertTrue(results.contains(star_trek));
-        Assert.assertTrue(results.contains(star_wars));
+        assertEquals(results.size(), 2L);
+        assertTrue(results.contains(STAR_TREK));
+        assertTrue(results.contains(STAR_WARS));
     }
 }
