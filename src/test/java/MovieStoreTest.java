@@ -8,9 +8,9 @@ import org.junit.Test;
 
 public class MovieStoreTest {
 
-    public static final Movie STAR_WARS = new Movie("Star wars");
-    public static final Movie STAR_TREK = new Movie("STAR trek");
-    public static final Movie HARRY_POTTER = new Movie("Harry Potter");
+    public static final Movie STAR_WARS = new Movie("Star wars", "George Lucas", 1999);
+    public static final Movie STAR_TREK = new Movie("STAR trek", "J.J Adams", 2000);
+    public static final Movie HARRY_POTTER = new Movie("Harry Potter", "ALfonso Cuarón", 2001);
     private  MovieStore movieStore;
 
     @Before
@@ -55,5 +55,14 @@ public class MovieStoreTest {
         assertEquals(results.size(), 2L);
         assertTrue(results.contains(STAR_TREK));
         assertTrue(results.contains(STAR_WARS));
+    }
+
+    @Test
+    public void findMovieByDirectorWhenPartiallyMatched() {
+        movieStore.add(STAR_WARS);
+        movieStore.add(STAR_TREK);
+        final List<Movie> result = movieStore.findByDirector("George Lucas");
+        assertEquals(result.size(), 1);
+        assertTrue(result.contains(STAR_WARS));
     }
 }
