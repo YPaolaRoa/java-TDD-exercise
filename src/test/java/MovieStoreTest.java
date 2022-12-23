@@ -1,12 +1,10 @@
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
 import java.util.List;
 import model.Movie;
+import org.assertj.core.api.WithAssertions;
 import org.junit.Before;
 import org.junit.Test;
 
-public class MovieStoreTest {
+public class MovieStoreTest implements WithAssertions {
 
     public static final Movie STAR_WARS = new Movie("Star wars", "George Lucas", 1999);
     public static final Movie STAR_TREK = new Movie("STAR trek", "J.J Adams", 2000);
@@ -20,19 +18,18 @@ public class MovieStoreTest {
     }
     @Test
     public void returnsNoResultWhenNoTitlesPartiallyMatch() {
-        final MovieStore movieStore = new MovieStore();
         List<Movie> results = movieStore.findByPartialTitle("abc");
 
-        assertEquals(results.size(), 0L);
+        assertThat(results).hasSize(0);
     }
 
     @Test
     public void addsAMovieToMovieStore() {
-        Movie harryPotter = HARRY_POTTER;
-        movieStore.add(harryPotter);
+        movieStore.add(HARRY_POTTER);
         List<Movie> allMovies = movieStore.getMovies();
-        assertTrue(allMovies.contains(harryPotter));
-        assertEquals(allMovies.size(), 1L);
+
+        assertThat(allMovies).contains(HARRY_POTTER);
+        assertThat(allMovies).hasSize(1);
     }
 
     @Test
@@ -40,29 +37,28 @@ public class MovieStoreTest {
         movieStore.add(HARRY_POTTER);
         movieStore.add(STAR_WARS);
         List<Movie> results = movieStore.findByPartialTitle("arry");
-        assertEquals(results.size(), 1L);
-        assertTrue(results.contains(HARRY_POTTER));
+        assertThat(results).hasSize(1);
+        assertThat(results).contains(HARRY_POTTER);
     }
 
 
     @Test
     public void findsMoviesWhenTitleIsPartiallyMatch() {
-        Movie harryPotter = HARRY_POTTER;
-        movieStore.add(harryPotter);
+        movieStore.add(HARRY_POTTER);
         movieStore.add(STAR_WARS);
         movieStore.add(STAR_TREK);
         List<Movie> results = movieStore.findByPartialTitle("tar");
-        assertEquals(results.size(), 2L);
-        assertTrue(results.contains(STAR_TREK));
-        assertTrue(results.contains(STAR_WARS));
+        assertThat(results).hasSize(2);
+        assertThat(results).contains(STAR_WARS);
+        assertThat(results).contains(STAR_TREK);
     }
 
     @Test
     public void findMovieByDirectorWhenPartiallyMatched() {
         movieStore.add(STAR_WARS);
         movieStore.add(STAR_TREK);
-        final List<Movie> result = movieStore.findByDirector("George Lucas");
-        assertEquals(result.size(), 1);
-        assertTrue(result.contains(STAR_WARS));
+        final List<Movie> results = movieStore.findByDirector("George Lucas");
+        assertThat(results).hasSize(1);
+        assertThat(results).contains(STAR_WARS);
     }
 }
