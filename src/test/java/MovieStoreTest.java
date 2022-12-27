@@ -25,4 +25,11 @@ public class MovieStoreTest implements WithAssertions {
     public void findsMoviesWhenTitleIsPartiallyMatch() {
 
     }
+
+    //Si nos da el tiempo
+    //Encontrar una pelicula por director
+    @Test
+    public void findMovieByDirectorWhenPartiallyMatched() {
+
+    }
 }
